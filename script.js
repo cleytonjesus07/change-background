@@ -21,12 +21,12 @@ btnAddColor.addEventListener("click", () => {
     if (colorHistory.findIndex(colorH => colorH === colorHex) === -1) {
         if (colorHex && colorHistory.filter(colorH => colorH === colorHex).length <= 0) {
             warning.innerText = "";
+            console.log({colorHex});
             boxControl.insertAdjacentHTML("beforeend", `
-            <button style="background-color:${colorHex}" class="btn"></button>
+            <button style="background-color:${colorHex};border-color:${(colorHex === "#000000") ? "white" : "black" }" class="btn"></button>
             `);
             setEventBtn();
             colorHistory.push(colorHex);
-            console.log({warning:"FOI dentro do if"})
             return;
         }
     }else{
