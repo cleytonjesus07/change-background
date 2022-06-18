@@ -2,8 +2,10 @@ const bgColor = document.querySelector("#bg-color");
 const boxColor = document.querySelector("#box-color");
 const btnAddColor = document.querySelector("#add-color");
 const boxControl = document.querySelector(".box-control");
+const warning = document.querySelector("#warning");
 
 let colorHex = null;
+let colorHistory = [];
 document.body.onload = () => setEventBtn();
 
 boxColor.addEventListener("input", (e) => {
@@ -16,12 +18,21 @@ boxColor.addEventListener("input", (e) => {
 
 btnAddColor.addEventListener("click", () => {
     /* Adicionar um botão na caixa de cores */
-    if (colorHex) {
-        boxControl.insertAdjacentHTML("beforeend", `
+    if (colorHistory.findIndex(colorH => colorH === colorHex) === -1) {
+        if (colorHex && colorHistory.filter(colorH => colorH === colorHex).length <= 0) {
+            warning.innerText = "";
+            boxControl.insertAdjacentHTML("beforeend", `
             <button style="background-color:${colorHex}" class="btn"></button>
-        `);
-        setEventBtn();
+            `);
+            setEventBtn();
+            colorHistory.push(colorHex);
+            console.log({warning:"FOI dentro do if"})
+            return;
+        }
+    }else{
+        warning.innerText = "Cor já escolhida, experimente outra cor! :("
     }
+
 })
 
 function setEventBtn() {
@@ -32,7 +43,8 @@ function setEventBtn() {
         btn.onclick = (e) => {
             const color = e.currentTarget.classList[1] || e.currentTarget.style.backgroundColor;
             document.body.style.backgroundColor = color;
-            (document.body.style.backgroundColor === "rgb(0, 0, 0)") ? document.body.style.color = "#fff" : document.body.style.color = "initial";           
+
+            (document.body.style.backgroundColor === "rgb(0, 0, 0)") ? document.body.style.color = "#fff" : document.body.style.color = "initial";
         }
     })
 
